@@ -1,0 +1,23 @@
+{
+  "name": "fis3-plugin-module",
+  "version": "1.0.0",
+  "description": "fis3 module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2betop/fis3-plugin-module.git"
+  },
+  "keywords": [
+    "fis3",
+    "module"
+  ],
+  "author": "fis",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/2betop/fis3-plugin-module/issues"
+  },
+  "homepage": "https://github.com/2betop/fis3-plugin-module"
+}
