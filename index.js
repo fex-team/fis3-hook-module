@@ -2,13 +2,20 @@ var amd = require('./lib/amd.js');
 var commonJs = require('./lib/commonJs.js');
 var rDefine = /\bdefine\b/i;
 
+function findResource(name, path) {
+  var extList = ['.js', '.coffee', '.jsx'];
+  var info = fis.uri(name, path);
+
+  for (var i = 0, len = extList.length; i < len && !info.file; i++) {
+    info = fis.uri(name + extList[i], path);
+  }
+
+  return info;
+}
 
 module.exports = function init(fis, opts) {
-  fis.on('standard:js', function(info) {
-    var content = info.content;
-
-    amd.test(info) ? amd(info) : commonJs(info);
-  });
+  var mode = opts.type || 'auto';
+  var useAMD = mode === 'amd' || mode === 'auto' && (opts.paths || opts.packages || opts.shim || opts.map);
 
   fis.on('lookup:file', function(info, file) {
 
@@ -17,6 +24,7 @@ module.exports = function init(fis, opts) {
       return;
     }
 
+    // 支持没有指定后缀的 require 查找。
     var test = findResource(info.rest, file.dirname);
 
     if (test.file) {
@@ -47,15 +55,17 @@ module.exports = function init(fis, opts) {
       file.setContent(content);
     }
   });
+
+  useAMD && amd.init(opts);
+
+  fis.on('standard:js', function(info) {
+    var _useAMD = useAMD || mode === 'auto' && amd.test(info);
+
+    if (_useAMD) {
+      amd.inited || amd.init(opts);
+      amd(info)
+    } else {
+      commonJs(info);
+    }
+  });
 };
-
-function findResource(name, path) {
-  var extList = ['.js', '.jsx', '.coffee', '.css', '.sass', '.scss', '.less', '.html', '.tpl', '.vm'];
-  var info = fis.uri(name, path);
-
-  for (var i = 0, len = extList.length; i < len && !info.file; i++) {
-    info = fis.uri(name + extList[i], path);
-  }
-
-  return info;
-}
