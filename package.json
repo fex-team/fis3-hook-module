@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/2betop/fis3-plugin-module/issues"
   },
-  "homepage": "https://github.com/2betop/fis3-plugin-module"
+  "homepage": "https://github.com/2betop/fis3-plugin-module",
+  "dependencies": {
+    "escope": "^1.0.3",
+    "esprima": "^2.1.0",
+    "estraverse": "^3.1.0"
+  }
 }

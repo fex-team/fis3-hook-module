@@ -15,7 +15,7 @@ function findResource(name, path) {
 
 module.exports = function init(fis, opts) {
   var mode = opts.type || 'auto';
-  var useAMD = mode === 'amd' || mode === 'auto' && (opts.paths || opts.packages || opts.shim || opts.map);
+  var useAMD = !!(mode === 'amd' || mode === 'auto' && (opts.paths || opts.packages || opts.shim || opts.map || opts.baseUrl));
 
   fis.on('lookup:file', function(info, file) {
 
@@ -25,11 +25,29 @@ module.exports = function init(fis, opts) {
     }
 
     // 支持没有指定后缀的 require 查找。
-    var test = findResource(info.rest, file.dirname);
+    var test = findResource(info.rest, file ? file.dirname : fis.project.getProjectPath());
 
     if (test.file) {
       info.id = test.file.getId();
       info.file = test.file;
+    } else {
+      var nsConnector = fis.config.env().get('namespaceConnector', ':');
+      var idx = info.rest.indexOf(nsConnector);
+
+      if (~idx) {
+        info.isFisId = true;
+
+        var ns = info.rest.substring(0, idx);
+        var subpath = info.rest.substring(idx + 1);
+
+        if (ns === fis.config.env().get('namespace')) {
+          test = findResource(subpath, fis.project.getProjectPath());
+          if (test.file) {
+            info.id = test.file.getId();
+            info.file = test.file;
+          }
+        }
+      }
     }
   });
 
@@ -41,14 +59,15 @@ module.exports = function init(fis, opts) {
 
       switch (type) {
         case 'amd':
+          // 已经包裹过，不重复包裹。
           if (rDefine.test(content)) {
             return;
           }
-          content = 'define(\''+file.id+'\', function(require) {\n'+content+'\n});';
+          content = 'define(\'' + (file.moduleId || file.id) + '\', function(require) {\n\n' + content + '\n\n});\n';
           break;
 
         case 'closure':
-          content = '(function() {\n' + content + '\n})();';
+          content = '(function() {\n\n' + content + '\n\n})();\n';
           break;
       }
 
@@ -62,10 +81,16 @@ module.exports = function init(fis, opts) {
     var _useAMD = useAMD || mode === 'auto' && amd.test(info);
 
     if (_useAMD) {
-      amd.inited || amd.init(opts);
-      amd(info)
+      amd.init(opts);
+      amd(info, opts);
     } else {
-      commonJs(info);
+      commonJs(info, opts);
     }
   });
+};
+
+module.exports.defaultOptions = {
+  globalAsyncAsSync: false,
+  forwardDeclaration: true,
+  baseUrl: '.'
 };
