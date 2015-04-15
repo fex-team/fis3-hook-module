@@ -71,6 +71,10 @@ module.exports = function init(fis, opts) {
           break;
       }
 
+      if (file.isMod && file.moduleId !== file.id) {
+        file.extras.moduleId = file.moduleId;
+      }
+
       file.setContent(content);
     }
   });
