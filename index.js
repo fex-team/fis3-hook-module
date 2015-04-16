@@ -1,6 +1,6 @@
 var amd = require('./lib/amd.js');
 var commonJs = require('./lib/commonJs.js');
-var rDefine = /\bdefine\b/i;
+var rDefine = /\bdefine\s*\(/i;
 
 function findResource(name, path) {
   var extList = ['.js', '.coffee', '.jsx'];
@@ -55,15 +55,16 @@ module.exports = function init(fis, opts) {
   fis.on('compile:postprocessor', function(file) {
     if (file.isJsLike) {
       var content = file.getContent();
-      var type = file.wrap || (file.isMod ? 'amd' : 'closure');
+      var type = file.wrap || (file.isMod ? 'amd' : '');
 
       switch (type) {
         case 'amd':
           // 已经包裹过，不重复包裹。
           if (rDefine.test(content)) {
+            console.log(file.subpath);
             return;
           }
-          content = 'define(\'' + (file.moduleId || file.id) + '\', function(require) {\n\n' + content + '\n\n});\n';
+          content = 'define(\'' + (file.moduleId || file.id) + '\', function(require, exports, module) {\n\n' + content + '\n\n});\n';
           break;
 
         case 'closure':
@@ -95,6 +96,5 @@ module.exports = function init(fis, opts) {
 
 module.exports.defaultOptions = {
   globalAsyncAsSync: false,
-  forwardDeclaration: true,
-  baseUrl: '.'
+  forwardDeclaration: true
 };
