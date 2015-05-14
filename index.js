@@ -1,6 +1,6 @@
 var amd = require('./lib/amd.js');
 var commonJs = require('./lib/commonJs.js');
-var rDefine = /\bdefine\s*\(/i;
+var rDefine = /('.*?'|".*?"|\/\/[^\r\n\f]*|\/\*[\s\S]*?\*\/)|((?:^|[^\.])\bdefine\s*\()/ig;
 
 function findResource(name, path) {
   var extList = ['.js', '.coffee', '.jsx'];
@@ -60,10 +60,10 @@ module.exports = function init(fis, opts) {
       switch (type) {
         case 'amd':
           // 已经包裹过，不重复包裹。
-          if (rDefine.test(content)) {
-            console.log(file.subpath);
+          if (amd.hasDefine(content)) {
             return;
           }
+
           content = 'define(\'' + (file.moduleId || file.id) + '\', function(require, exports, module) {\n\n' + content + '\n\n});\n';
           break;
 
