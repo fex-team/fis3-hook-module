@@ -1,6 +1,5 @@
 var amd = require('./lib/amd.js');
 var commonJs = require('./lib/commonJs.js');
-var rDefine = /('.*?'|".*?"|\/\/[^\r\n\f]*|\/\*[\s\S]*?\*\/)|((?:^|[^\.])\bdefine\s*\()/ig;
 
 function findResource(name, path) {
   var extList = ['.js', '.coffee', '.jsx'];
