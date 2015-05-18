@@ -3,7 +3,7 @@
  */
 var fs = require('fs'),
   path   = require('path');
-var fis = require('../../..');
+var fis = require('fis');
 var _      = fis.util,
   config = fis.config;
 var expect = require('chai').expect;
