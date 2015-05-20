@@ -98,5 +98,6 @@ module.exports.defaultOptions = {
   forwardDeclaration: true,
 
   // 是否修改 factory 中的 require 路径。
-  modifyFactory: true
+  // 不能开放，因为不修改 factory 的话，有可能导致找不到模块。
+  // modifyFactory: true
 };
