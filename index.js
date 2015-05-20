@@ -95,5 +95,8 @@ module.exports = function init(fis, opts) {
 
 module.exports.defaultOptions = {
   globalAsyncAsSync: false,
-  forwardDeclaration: true
+  forwardDeclaration: true,
+
+  // 是否修改 factory 中的 require 路径。
+  modifyFactory: true
 };
