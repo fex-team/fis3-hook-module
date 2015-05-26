@@ -18,14 +18,6 @@ fis-conf.js
 
 fis.hook('module', {
 
-    // 是否将全局的 require(['jquery']) 异步用法当成同步？
-    globalAsyncAsSync: false,
-
-    // 是否依赖前置
-    // 即 是否将 factory 中的 require 对象，前置放在 define 的第二个参数中。
-    // 对于 amd loader 来说可以免去解析 factory 的操作。
-    forwardDeclaration: true,
-
     // 分为两种：
     //
     // `commonJs` 选用此方案，性能最好，规则更简单
@@ -44,7 +36,15 @@ fis.hook('module', {
 
     // 后续补充
     // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#packages-
-    // packages: []
+    // packages: [],
+
+    // 是否将全局的 require(['jquery']) 异步用法当成同步？
+    globalAsyncAsSync: false,
+
+    // 是否依赖前置
+    // 即 是否将 factory 中的 require 对象，前置放在 define 的第二个参数中。
+    // 对于 amd loader 来说可以免去解析 factory 的操作。
+    forwardDeclaration: true,
 });
 
 ```
