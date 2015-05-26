@@ -1,6 +1,16 @@
-# fis3-plugin-module
+# fis3-hook-module
 
 fis3 模块化开发支持！
+
+## 安装
+
+全局安装或者本地安装都可以。
+
+```bash
+npm install fis3-hook-module
+```
+
+## 配置
 
 fis-conf.js
 
