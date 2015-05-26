@@ -1,6 +1,6 @@
 {
-  "name": "fis3-plugin-module",
-  "version": "1.0.9",
+  "name": "fis3-hook-module",
+  "version": "1.0.0",
   "description": "fis3 module",
   "main": "index.js",
   "scripts": {
