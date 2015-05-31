@@ -14,7 +14,9 @@ function findResource(name, path) {
 
 module.exports = function init(fis, opts) {
   var mode = opts.type || 'auto';
-  var useAMD = !!(mode === 'amd' || mode === 'auto' && (opts.paths || opts.packages || opts.shim || opts.map || opts.baseUrl));
+
+  // 只是路径查找，commonJs 模式下可以开启。
+  amd.init(opts);
 
   fis.on('lookup:file', function(info, file) {
 
@@ -79,13 +81,13 @@ module.exports = function init(fis, opts) {
     }
   });
 
-  useAMD && amd.init(opts);
+
 
   fis.on('standard:js', function(info) {
-    var _useAMD = useAMD || mode === 'auto' && amd.test(info);
+    var _useAMD = mode === 'auto' && amd.test(info) || mode === 'amd';
+    var file = info.file;
 
-    if (_useAMD) {
-      amd.init(opts);
+    if (_useAMD && file.isMod) {
       amd(info, opts);
     } else {
       commonJs(info, opts);
