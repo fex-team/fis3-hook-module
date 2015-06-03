@@ -65,7 +65,18 @@ module.exports = function init(fis, opts) {
             return;
           }
 
-          content = 'define(\'' + (file.moduleId || file.id) + '\', function(require, exports, module) {\n\n' + content + '\n\n});\n';
+          var deps = '';
+          if (opts.forwardDeclaration) {
+            var reqs = ['\'require\'', '\'exports\'', '\'module\''];
+            file.requires.forEach(function(id) {
+
+              /\.js$/i.test(id) && reqs.push('\'' + id.replace(/\.js$/i, '') + '\'');
+            });
+
+            deps = '[' + reqs.join(',') + '], ';
+          }
+
+          content = 'define(\'' + (file.moduleId || file.id) + '\',' + deps + ' function(require, exports, module) {\n\n' + content + '\n\n});\n';
           break;
 
         case 'closure':
