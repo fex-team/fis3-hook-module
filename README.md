@@ -12,10 +12,19 @@ npm install fis3-hook-module
 
 ## 配置
 
-在 fis-conf.js 中加入以下代码即可。
+在 fis-conf.js 中加入以下代码。
 
 ```javascript
 fis.hook('module');
+```
+
+然后通过配置标记哪些 js 为模块化 js.
+
+```javascript
+// 标记 /libs 当前目录下面的 js 文件为模块化 js.
+fis.match('/libs/*.js', {
+  isMod: true
+});
 ```
 
 ## 配置说明
