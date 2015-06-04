@@ -1,6 +1,6 @@
 # fis3-hook-module
 
-fis3 模块化开发支持！
+fis3 已经默认不自带模块化开发支持，需要此插件来完成模块化开发的支持。
 
 ## 安装
 
@@ -11,6 +11,14 @@ npm install fis3-hook-module
 ```
 
 ## 配置
+
+在 fis-conf.js 中加入以下代码即可。
+
+```javascript
+fis.hook('module');
+```
+
+## 配置说明
 
 fis-conf.js
 
