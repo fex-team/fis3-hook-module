@@ -15,9 +15,6 @@ function findResource(name, path) {
 module.exports = function init(fis, opts) {
   var mode = opts.type || 'auto';
 
-  // 只是路径查找，commonJs 模式下可以开启。
-  amd.init(opts);
-
   fis.on('lookup:file', function(info, file) {
 
     // 已经找到了，不重复找。
@@ -51,6 +48,9 @@ module.exports = function init(fis, opts) {
       }
     }
   });
+
+   // 只是路径查找，commonJs 模式下可以开启。
+  amd.init(opts);
 
   // wrap with amd
   fis.on('compile:postprocessor', function(file) {
