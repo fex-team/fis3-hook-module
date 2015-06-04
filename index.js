@@ -13,7 +13,7 @@ function findResource(name, path) {
 }
 
 module.exports = function init(fis, opts) {
-  var mode = opts.type || 'auto';
+  var mode = opts.mode || 'auto';
 
   fis.on('lookup:file', function(info, file) {
 
@@ -107,10 +107,7 @@ module.exports = function init(fis, opts) {
 };
 
 module.exports.defaultOptions = {
+  mode: 'auto',
   globalAsyncAsSync: false,
-  forwardDeclaration: true,
-
-  // 是否修改 factory 中的 require 路径。
-  // 不能开放，因为不修改 factory 的话，有可能导致找不到模块。
-  // modifyFactory: true
+  forwardDeclaration: false
 };
