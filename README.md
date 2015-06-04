@@ -45,37 +45,47 @@ fis-conf.js
 
 fis.hook('module', {
 
-    // 分为两种：
-    //
-    // `commonJs` 选用此方案，性能最好，规则更简单
-    // `amd` 需要词法分析，时间略长。
-    //  当设置为 auto 的时候，程序自动判断。
-    mode: 'auto',
+  // 可以通过设置此值来给 js 文件进行包裹。
+  // 
+  // 可选值：
+  // - `amd` 即 amd 包裹
+  // - `closure` 即闭包包裹。
+  // - 留空时不进行处理，isMod 为 true 的文件除外。isMod 为 true 的文件，会进行 amd 方式包裹。
+  wrap: '',
 
-    // 配置 baseUrl https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#baseurl-
-    // baseUrl: '.',
+  // 分为两种：
+  //
+  // `commonJs` 选用此方案，性能最好，规则更简单
+  // `amd` 需要词法分析，时间略长。
+  //  当设置为 auto 的时候，程序自动判断。
+  mode: 'auto',
 
-    // 后续补充
-    // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#paths-
-    // paths: [],
+  // 配置 baseUrl 
+  // https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#baseurl-
+  // baseUrl: '.',
 
-    // 后续补充
-    // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#packages-
-    // packages: [],
-    
-    // 是否依赖前置
-    // 即 是否将 factory 中的 require 对象，前置放在 define 的第二个参数中。
-    // 对于 amd loader 来说可以免去解析 factory 的操作。推荐给用  amd loader。
-    // !!! 用  mod.js 作为 loader 时，勿用!!!!
-    forwardDeclaration: false,
+  // 后续补充
+  // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#paths-
+  // paths: [],
 
-    // 当 mod 为 amd 时，以下配置才有效。
-    // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#shim-
-    shim: null,
-    
-    // 是否将全局的 require(['jquery']) 异步用法当成同步？
-    // 当成同步，js 加载不再走 loader 而是，直接页面源码中输出 <script> 标签到页面，用 <script> 来加载。
-    globalAsyncAsSync: false,
+  // 后续补充
+  // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#packages-
+  // packages: [],
+  
+  // 是否依赖前置
+  // 即 是否将 factory 中的 require 对象，前置放在 define 的第二个参数中。
+  // 对于 amd loader 来说可以免去解析 factory 的操作。推荐给用  amd loader。
+  // !!! 用  mod.js 作为 loader 时，勿用!!!!
+  forwardDeclaration: false,
+
+  // 当 mod 为 amd 时，以下配置才有效。
+  
+  // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#shim-
+  // shim: null,
+  
+  // 是否将全局的 require(['jquery']) 异步用法当成同步？
+  // 当成同步，js 加载不再走 loader 而是，直接页面源码中输出 <script> 标签到页面，用 <script> 来加载。
+  globalAsyncAsSync: false,
     
 });
 ```
