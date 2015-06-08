@@ -54,7 +54,7 @@ module.exports = function init(fis, opts) {
 
   // wrap with amd
   fis.on('compile:postprocessor', function(file) {
-    if (file.isJsLike && !fis.isPartial) {
+    if (file.isJsLike && !file.isPartial) {
       var content = file.getContent();
       var type = file.wrap || (file.isMod ? 'amd' : '');
 
