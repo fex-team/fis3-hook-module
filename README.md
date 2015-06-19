@@ -60,13 +60,24 @@ fis.hook('module', {
   //  当设置为 auto 的时候，程序自动判断。
   mode: 'auto',
 
-  // 配置 baseUrl 
+  // 配置 baseUrl, 配置，页面中的 require 路径都是基于此路径查找的。
   // https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#baseurl-
   // baseUrl: '.',
 
-  // 后续补充
-  // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#paths-
-  // paths: [],
+  // 可以给项目中的路径或者文件建立别名。
+  // 
+  // {
+  //   libs: '/static/libs',
+  //   jquery: '/static/libs/jquery'
+  // }
+  // 
+  // 那么:
+  // 
+  // require('lib/alert'); 就等价于 require('/static/libs/alert');
+  // requrire('jquery');  等价于： require('/static/libs/jquery');
+
+  // 更多信息请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#paths-
+  // paths: {},
 
   // 后续补充
   // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#packages-
