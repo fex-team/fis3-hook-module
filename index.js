@@ -1,4 +1,5 @@
 var amd = require('./lib/amd.js');
+var cmd = require('./lib/cmd.js');
 var commonJs = require('./lib/commonJs.js');
 
 function findResource(name, path) {
@@ -49,7 +50,7 @@ module.exports = function init(fis, opts) {
     }
   });
 
-   // 只是路径查找，commonJs 模式下可以开启。
+   // 只是路径查找，commonJs 和 cmd 模式下可以开启。
   amd.init(opts);
 
   // wrap with amd
@@ -100,6 +101,8 @@ module.exports = function init(fis, opts) {
 
     if (_useAMD && file.isMod) {
       amd(info, opts);
+    } else if ( mode === 'cmd' ) {
+      cmd(info, opts);
     } else {
       commonJs(info, opts);
     }
