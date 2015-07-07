@@ -2,8 +2,8 @@ var amd = require('./lib/amd.js');
 var cmd = require('./lib/cmd.js');
 var commonJs = require('./lib/commonJs.js');
 
-function findResource(name, path) {
-  var extList = ['.js', '.coffee', '.jsx'];
+function findResource(name, path, extList) {
+  extList = extList || ['.js', '.coffee', '.jsx'];
   var info = fis.uri(name, path);
 
   for (var i = 0, len = extList.length; i < len && !info.file; i++) {
@@ -24,7 +24,7 @@ module.exports = function init(fis, opts) {
     }
 
     // 支持没有指定后缀的 require 查找。
-    var test = findResource(info.rest, file ? file.dirname : fis.project.getProjectPath());
+    var test = findResource(info.rest, file ? file.dirname : fis.project.getProjectPath(), opts.extList);
 
     if (test.file) {
       info.id = test.file.getId();

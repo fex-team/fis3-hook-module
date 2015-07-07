@@ -102,6 +102,10 @@ fis.hook('module', {
   // 是否将全局的 require(['jquery']) 异步用法当成同步？
   // 当成同步，js 加载不再走 loader 而是，直接页面源码中输出 <script> 标签到页面，用 <script> 来加载。
   globalAsyncAsSync: false,
-    
+
+  // 用来设置无后缀引用模块时，对模块的定义的文件查找顺序。
+  // 如： require('./main')
+  // 查找顺序为：require('./main.js') require('./main.coffee') require('./main.jsx')
+  // extList: ['.js', '.coffee', '.jsx']
 });
 ```
