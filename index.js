@@ -1,17 +1,7 @@
 var amd = require('./lib/amd.js');
 var cmd = require('./lib/cmd.js');
 var commonJs = require('./lib/commonJs.js');
-
-function findResource(name, path, extList) {
-  extList = extList || ['.js', '.coffee', '.jsx'];
-  var info = fis.uri(name, path);
-
-  for (var i = 0, len = extList.length; i < len && !info.file; i++) {
-    info = fis.uri(name + extList[i], path);
-  }
-
-  return info;
-}
+var helper = require('./lib/helper.js');
 
 module.exports = function init(fis, opts) {
   var mode = opts.mode || 'auto';
@@ -24,7 +14,7 @@ module.exports = function init(fis, opts) {
     }
 
     // 支持没有指定后缀的 require 查找。
-    var test = findResource(info.rest, file ? file.dirname : fis.project.getProjectPath(), opts.extList);
+    var test = helper.findResource(info.rest, file ? file.dirname : fis.project.getProjectPath(), opts.extList);
 
     if (test.file) {
       info.id = test.file.getId();
@@ -39,8 +29,8 @@ module.exports = function init(fis, opts) {
         var ns = info.rest.substring(0, idx);
         var subpath = info.rest.substring(idx + 1);
 
-        if (ns === fis.config.env().get('namespace')) {
-          test = findResource(subpath, fis.project.getProjectPath());
+        if (ns === fis.media().get('namespace')) {
+          test = helper.findResource(subpath, fis.project.getProjectPath(), opts.extList);
           if (test.file) {
             info.id = test.file.getId();
             info.file = test.file;
@@ -54,6 +44,7 @@ module.exports = function init(fis, opts) {
   amd.init(opts);
 
   // wrap with amd
+  var extReg;
   fis.on('compile:postprocessor', function(file) {
     if (file.isJsLike && !file.isPartial) {
       var content = file.getContent();
@@ -69,9 +60,26 @@ module.exports = function init(fis, opts) {
           var deps = '';
           if (opts.forwardDeclaration) {
             var reqs = ['\'require\'', '\'exports\'', '\'module\''];
-            file.requires.forEach(function(id) {
 
-              /\.js$/i.test(id) && reqs.push('\'' + id.replace(/\.js$/i, '') + '\'');
+            if (opts.skipBuiltinModoules) {
+              reqs = [];
+            }
+
+            file.requires.forEach(function(id) {
+              var dep = fis.uri(id);
+
+              if (dep.file) {
+                if (dep.file.isJsLike) {
+                  reqs.push('\'' + (dep.file.moduleId || dep.file.id) + '\'');
+                }
+              } else {
+                extReg = extReg || new RegExp('(' + (opts.extList || []).map(function(ext) {
+                  return fis.util.escapeReg(ext);
+                }).join('|') + ')$', 'i');
+
+                // 只有 js 依赖才加入，且 id 只去除 .js 后缀。
+                extReg.test(id) && reqs.push('\'' + id.replace(/\.js$/i, '') + '\'');
+              }
             });
 
             deps = '[' + reqs.join(',') + '], ';
@@ -113,5 +121,6 @@ module.exports.defaultOptions = {
   mode: 'auto',
   globalAsyncAsSync: false,
   forwardDeclaration: false,
-  skipBuiltinModoules: false
+  skipBuiltinModoules: false,
+  extList: ['.js', '.coffee', '.jsx', '.es6']
 };
