@@ -112,5 +112,6 @@ module.exports = function init(fis, opts) {
 module.exports.defaultOptions = {
   mode: 'auto',
   globalAsyncAsSync: false,
-  forwardDeclaration: false
+  forwardDeclaration: false,
+  skipBuiltinModoules: false
 };

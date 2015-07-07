@@ -89,6 +89,11 @@ fis.hook('module', {
   // !!! 用  mod.js 作为 loader 时，勿用!!!!
   forwardDeclaration: false,
 
+  // 当开启依赖前置后有效，用来控制 amd 的内建模块是否需要保留在 deps 第二个参数中。
+  // 如: require, exports, module
+  // 像 cmd 是不需要的，所以模式是 cmd 时，自动会开启。
+  skipBuiltinModoules: false,
+
   // 当 mod 为 amd 时，以下配置才有效。
   
   // 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#shim-
