@@ -73,7 +73,7 @@ fis.hook('module', {
   // 
   // 那么:
   // 
-  // require('lib/alert'); 就等价于 require('/static/libs/alert');
+  // require('libs/alert'); 就等价于 require('/static/libs/alert');
   // requrire('jquery');  等价于： require('/static/libs/jquery');
 
   // 更多信息请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#paths-
