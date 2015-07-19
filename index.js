@@ -102,7 +102,6 @@ module.exports = function init(fis, opts) {
   });
 
 
-
   fis.on('standard:js', function(info) {
     var _useAMD = mode === 'auto' && amd.test(info) || mode === 'amd';
     var file = info.file;
@@ -115,6 +114,26 @@ module.exports = function init(fis, opts) {
       commonJs(info, opts);
     }
   });
+
+  // 当使用 amd 模式时，解析 data-main
+  if (mode === 'amd' || mode === 'auto') {
+    var rScript = /<!--([\s\S]*?)(?:-->|$)|(<script[^>]*>[\s\S]*?<\/script>)/ig;
+    var rDataMain = /\bdata-main=('|")(.*?)\1/;
+    var lang = fis.compile.lang;
+
+    // 解析 data-main
+    fis.on('standard:html', function(info) {
+      info.content = info.content.replace(rScript, function(all, comment, script) {
+        if (!comment && script) {
+          all = all.replace(rDataMain, function(_, quote, value) {
+            return lang.info.wrap(lang.jsRequire.wrap(quote + value + quote));
+          });
+        }
+
+        return all;
+      });
+    });
+  }
 };
 
 module.exports.defaultOptions = {
