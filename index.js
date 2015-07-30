@@ -138,7 +138,7 @@ module.exports = function init(fis, opts) {
 
 module.exports.defaultOptions = {
   mode: 'auto',
-  globalAsyncAsSync: false,
+  globalAsyncAsSync: false, // 只有 amd 方案时才有效！
   forwardDeclaration: false,
   skipBuiltinModoules: false,
   extList: ['.js', '.coffee', '.jsx', '.es6']
