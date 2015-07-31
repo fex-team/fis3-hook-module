@@ -89,7 +89,7 @@ fis.hook('module', {
   // 当开启依赖前置后有效，用来控制 amd 的内建模块是否需要保留在 deps 第二个参数中。
   // 如: require, exports, module
   // 像 cmd 是不需要的，所以模式是 cmd 时，自动会开启。
-  skipBuiltinModoules: false,
+  skipBuiltinModules: false,
 
   // 当 mod 为 amd 时，以下配置才有效。
   
@@ -141,7 +141,7 @@ fis.hook('module', {
   - 更多配置请参考：https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#packages-
 * `packages` 用来配置包信息。
 * `forwardDeclaration` 默认为 `false`, 是否依赖前置, 即 是否将 factory 中的 require 对象，前置放在 define 的第二个参数中。**用  mod.js 作为 loader 时，勿用**
-* `skipBuiltinModoules` 默认 `false`, 当开启依赖前置后有效，用来控制 amd 的内建模块是否需要保留在 deps 第二个参数中。如: require, exports, module。像 cmd 是不需要的，所以模式是 cmd 时，自动会开启。
+* `skipBuiltinModules` 默认 `false`, 当开启依赖前置后有效，用来控制 amd 的内建模块是否需要保留在 deps 第二个参数中。如: require, exports, module。像 cmd 是不需要的，所以模式是 cmd 时，自动会开启。
 * `shim` 届时，请参考。https://github.com/amdjs/amdjs-api/blob/master/CommonConfig.md#shim-
 * `globalAsyncAsSync` 默认 `false`, 是否将全局的 require(['jquery']) 异步用法当成同步？当成同步，js 加载不再走 loader 而是，直接页面源码中输出 <script> 标签到页面，用 <script> 来加载。
 * `extList` 默认值为 `['.js', '.coffee', '.jsx', '.es6']`, 用来设置无后缀引用模块时，对模块的定义的文件查找顺序，如： `require('./main')`, 查找顺序为：`require('./main.js') require('./main.coffee') require('./main.jsx')`

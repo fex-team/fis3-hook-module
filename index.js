@@ -48,20 +48,15 @@ module.exports = function init(fis, opts) {
   fis.on('compile:postprocessor', function(file) {
     if (file.isJsLike && !file.isPartial) {
       var content = file.getContent();
-      var type = typeof file.wrap === 'undefined' ? (file.isMod ? 'amd' : '') : file.wrap;
+      var type = typeof file.wrap === 'undefined' ? (file.isMod && !amd.hasDefine(content) ? 'amd' : '') : file.wrap;
 
       switch (type) {
         case 'amd':
-          // 已经包裹过，不重复包裹。
-          if (amd.hasDefine(content)) {
-            return;
-          }
-
           var deps = '';
           if (opts.forwardDeclaration) {
             var reqs = ['\'require\'', '\'exports\'', '\'module\''];
 
-            if (opts.skipBuiltinModoules) {
+            if (opts.skipBuiltinModules) {
               reqs = [];
             }
 
@@ -73,12 +68,7 @@ module.exports = function init(fis, opts) {
                   reqs.push('\'' + (dep.file.moduleId || dep.file.id) + '\'');
                 }
               } else {
-                extReg = extReg || new RegExp('(' + (opts.extList || []).map(function(ext) {
-                  return fis.util.escapeReg(ext);
-                }).join('|') + ')$', 'i');
-
-                // 只有 js 依赖才加入，且 id 只去除 .js 后缀。
-                extReg.test(id) && reqs.push('\'' + id.replace(/\.js$/i, '') + '\'');
+                /(\..+)$/.test(id) ? (~opts.extList.indexOf(RegExp.$1) ? reqs.push('\'' + id.replace(/\.js$/i, '') + '\'') : '') : reqs.push('\'' + id + '\'');
               }
             });
 
@@ -140,6 +130,6 @@ module.exports.defaultOptions = {
   mode: 'auto',
   globalAsyncAsSync: false, // 只有 amd 方案时才有效！
   forwardDeclaration: false,
-  skipBuiltinModoules: false,
+  skipBuiltinModules: false,
   extList: ['.js', '.coffee', '.jsx', '.es6']
 };
