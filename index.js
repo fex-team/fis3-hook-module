@@ -49,7 +49,7 @@ module.exports = function init(fis, opts) {
     if (file.isJsLike && !file.isPartial) {
       var content = file.getContent();
       var type = typeof file.wrap === 'undefined' ? (file.isMod && !amd.hasDefine(content) ? 'amd' : '') : file.wrap;
-
+      
       switch (type) {
         case 'amd':
           var deps = '';
@@ -61,7 +61,7 @@ module.exports = function init(fis, opts) {
             }
 
             file.requires.forEach(function(id) {
-              var dep = fis.uri(id);
+              var dep = fis.uri(id, file.dirname);
 
               if (dep.file) {
                 if (dep.file.isJsLike) {
