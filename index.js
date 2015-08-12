@@ -96,8 +96,20 @@ module.exports = function init(fis, opts) {
     var _useAMD = mode === 'auto' && amd.test(info) || mode === 'amd';
     var file = info.file;
 
-    if (_useAMD && file.isMod) {
-      amd(info, opts);
+    if (_useAMD) {
+      if (file.isMod) {
+        amd(info, opts);
+      } else {
+        
+        // 先尝试 amd 解析，失败则走 commonJs
+        // 非模块化的js 一般都只有 require 的用法。
+        try {
+          amd(info, opts);
+        } catch (e) {
+          commonJs(info, opts);
+        }
+      }
+      
     } else if ( mode === 'cmd' ) {
       cmd(info, opts);
     } else {
