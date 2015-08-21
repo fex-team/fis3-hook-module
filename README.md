@@ -1,7 +1,7 @@
 # fis3-hook-module
 
 
-**Deprecated**
+## Deprecated
 
 已被拆分成多个插件，放一起容易带来麻烦，请迁移对应的插件中。
 
@@ -9,6 +9,7 @@
 * `AMD` 方案请使用 [fis3-hook-amd](https://github.com/fex-team/fis3-hook-amd)
 * `CMD` 方案请使用 [fis3-hook-cmd](https://github.com/fex-team/fis3-hook-cmd)
 
+--------------------------
 
 fis3 已经默认不自带模块化开发支持，需要此插件来完成模块化开发的支持。
 
