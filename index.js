@@ -98,7 +98,12 @@ module.exports = function init(fis, opts) {
 
     if (_useAMD) {
       if (file.isMod) {
-        amd(info, opts);
+        try { 
+          amd(info, opts);
+        } catch (e) {
+          fis.log.warn('Got Error: %s while parse [%s].', e.message, file.subpath);
+          fis.log.debug(e.stack);
+        }
       } else {
         
         // 先尝试 amd 解析，失败则走 commonJs
