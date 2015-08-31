@@ -1,7 +1,7 @@
 # fis3-hook-module
 
 
-## Deprecated
+## Deprecated 不再更新
 
 已被拆分成多个插件，放一起容易带来麻烦，请迁移对应的插件中。
 
